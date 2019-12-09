@@ -1,6 +1,7 @@
 class IntCode:
     def __init__(self, instructions, first_input=0, rest_input=None):
         self.instructions = instructions
+        self.instructions += [0] * 10000
         self.first_input = first_input
         self.use_first_input = True
         if rest_input is None:
@@ -8,6 +9,7 @@ class IntCode:
         else:
             self.rest_input = rest_input
         self.i = 0
+        self.offset = 0
 
     def set_input(self, x):
         self.rest_input = x
@@ -22,21 +24,51 @@ class IntCode:
             if opcode == 99:
                 return True
             if opcode == 1:
-                self._add(first_mode, second_mode)
+                self.write(3, third_mode,
+                           self.read(1, first_mode) + self.read(2, second_mode))
+                self. i += 4
             if opcode == 2:
-                self._mult(first_mode, second_mode)
+                self.write(3, third_mode,
+                           self.read(1, first_mode) * self.read(2, second_mode))
+                self.i += 4
             if opcode == 3:
-                self._write()
+                if self.use_first_input:
+                    self.write(1, first_mode, self.first_input)
+                    self.use_first_input = False
+                else:
+                    self.write(1, first_mode, self.rest_input)
+                self.i += 2
             if opcode == 4:
-                return self._output(first_mode)
+                output_value = self.read(1, first_mode)
+                self.i += 2
+                return output_value
             if opcode == 5:
-                self._jump_if_true(first_mode, second_mode)
+                first_value = self.read(1, first_mode)
+                if first_value != 0:
+                    self.i = self.read(2, second_mode)
+                else:
+                    self.i += 3
             if opcode == 6:
-                self._jump_if_false(first_mode, second_mode)
+                first_value = self.read(1, first_mode)
+                if first_value == 0:
+                    self.i = self.read(2, second_mode)
+                else:
+                    self.i += 3
             if opcode == 7:
-                self._less_than(first_mode, second_mode)
+                if self.read(1, first_mode) < self.read(2, second_mode):
+                    self.write(3, third_mode, 1)
+                else:
+                    self.write(3, third_mode, 0)
+                self.i += 4
             if opcode == 8:
-                self._equals(first_mode, second_mode)
+                if self.read(1, first_mode) == self.read(2, second_mode):
+                    self.write(3, third_mode, 1)
+                else:
+                    self.write(3, third_mode, 0)
+                self.i += 4
+            if opcode == 9:
+                self.offset += self.read(1, first_mode)
+                self.i += 2
 
     def run_through(self):
         outputs = []
@@ -46,102 +78,21 @@ class IntCode:
                 return outputs
             outputs.append(next_output)
 
-    def _add(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        self.instructions[self.instructions[self.i + 3]] = \
-                                                   first_value + second_value
-        self.i += 4
+    def read(self, parameter, mode):
+        if mode == 2:
+            addr = self.instructions[self.i + parameter] + self.offset
+            return self.instructions[addr]
+        elif mode == 1:
+            value = self.instructions[self.i + parameter]
+            return value
+        elif mode == 0:
+            addr = self.instructions[self.i + parameter]
+            return self.instructions[addr]
 
-    def _mult(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        self.instructions[self.instructions[self.i + 3]] = \
-                                                   first_value * second_value
-        self.i += 4
-
-    def _write(self):
-        if self.use_first_input:
-            self.instructions[self.instructions[self.i + 1]] = self.first_input
-            self.use_first_input = False
-        else:
-            self.instructions[self.instructions[self.i + 1]] = self.rest_input
-        self.i += 2
-
-    def _output(self, first_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        self.i += 2
-        return first_value
-
-    def _jump_if_true(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        if first_value != 0:
-            self.i = second_value
-        else:
-            self.i += 3
-
-    def _jump_if_false(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        if first_value == 0:
-            self.i = second_value
-        else:
-            self.i += 3
-
-    def _less_than(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        if first_value < second_value:
-            self.instructions[self.instructions[self.i + 3]] = 1
-        else:
-            self.instructions[self.instructions[self.i + 3]] = 0
-        self.i += 4
-
-    def _equals(self, first_mode, second_mode):
-        if first_mode == 1:
-            first_value = self.instructions[self.i + 1]
-        else:
-            first_value = self.instructions[self.instructions[self.i + 1]]
-        if second_mode == 1:
-            second_value = self.instructions[self.i + 2]
-        else:
-            second_value = self.instructions[self.instructions[self.i + 2]]
-        if first_value == second_value:
-            self.instructions[self.instructions[self.i + 3]] = 1
-        else:
-            self.instructions[self.instructions[self.i + 3]] = 0
-        self.i += 4
+    def write(self, parameter, mode, value):
+        if mode == 2:
+            addr = self.instructions[self.i + parameter] + self.offset
+            self.instructions[addr] = value
+        elif mode == 0:
+            addr = self.instructions[self.i + parameter]
+            self.instructions[addr] = value
