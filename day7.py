@@ -36,19 +36,19 @@ def part_2(loc=DEFAULT_INPUT):
         while not finished:
             a_comp.set_input(prev_e_res)
             a_res = a_comp.get_output()
-            b_comp.set_input(a_res)
+            b_comp.set_input(a_res[1])
             b_res = b_comp.get_output()
-            c_comp.set_input(b_res)
+            c_comp.set_input(b_res[1])
             c_res = c_comp.get_output()
-            d_comp.set_input(c_res)
+            d_comp.set_input(c_res[1])
             d_res = d_comp.get_output()
-            e_comp.set_input(d_res)
+            e_comp.set_input(d_res[1])
             e_res = e_comp.get_output()
-            if e_res is True:
+            if e_res[0]:
                 finished = True
                 max_val = max(max_val, prev_e_res)
             else:
-                prev_e_res = e_res
+                prev_e_res = e_res[1]
     return max_val
         
         

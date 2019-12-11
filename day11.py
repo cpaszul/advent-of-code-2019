@@ -6,23 +6,23 @@ DEFAULT_INPUT = 'day11.txt'
 def part_1(loc=DEFAULT_INPUT):
     with open(loc) as f:
         instructions = list(map(int, f.readline().rstrip().split(',')))
-    grid = defaultdict(lambda:False)
+    grid = defaultdict(int)
     coord = (0, 0)
     direction = (0, -1)
     painted = set()
     ic = IntCode(instructions, 0)
     while True:
         new_color = ic.get_output()
-        if new_color is True:
+        if new_color[0]:
             break
-        grid[coord] = new_color == True
+        grid[coord] = new_color[1]
         painted.add(coord)
         turn = ic.get_output()
-        if turn is True:
+        if turn[0]:
             break
-        direction = new_direction(direction, turn)
+        direction = new_direction(direction, turn[1])
         coord = coord[0] + direction[0], coord[1] + direction[1]
-        ic.set_input(1 if grid[coord] else 0)
+        ic.set_input(grid[coord])
     return len(painted)
 
 def new_direction(current, turn):
@@ -35,20 +35,20 @@ def new_direction(current, turn):
 def part_2(loc=DEFAULT_INPUT):
     with open(loc) as f:
         instructions = list(map(int, f.readline().rstrip().split(',')))
-    grid = defaultdict(lambda:False)
+    grid = defaultdict(int)
     coord = (0, 0)
-    grid[(0, 0)] = True
+    grid[(0, 0)] = 1
     direction = (0, -1)
     ic = IntCode(instructions, 1)
     while True:
         new_color = ic.get_output()
-        if new_color is True:
+        if new_color[0]:
             break
-        grid[coord] = new_color == True
+        grid[coord] = new_color[1]
         turn = ic.get_output()
-        if turn is True:
+        if turn[0]:
             break
-        direction = new_direction(direction, turn)
+        direction = new_direction(direction, turn[1])
         coord = coord[0] + direction[0], coord[1] + direction[1]
         ic.set_input(1 if grid[coord] else 0)
     min_x = min(grid.keys(), key=lambda p:p[0])[0]

@@ -22,7 +22,7 @@ class IntCode:
                         map(int, (padded_inst[0], padded_inst[1],
                                   padded_inst[2], padded_inst[3:]))
             if opcode == 99:
-                return True
+                return (True, 0)
             if opcode == 1:
                 self.write(3, third_mode,
                            self.read(1, first_mode) + self.read(2, second_mode))
@@ -41,7 +41,7 @@ class IntCode:
             if opcode == 4:
                 output_value = self.read(1, first_mode)
                 self.i += 2
-                return output_value
+                return (False, output_value)
             if opcode == 5:
                 first_value = self.read(1, first_mode)
                 if first_value != 0:
@@ -72,11 +72,9 @@ class IntCode:
 
     def run_through(self):
         outputs = []
-        while True:
-            next_output = self.get_output()
-            if next_output is True:
-                return outputs
-            outputs.append(next_output)
+        while not (output := self.get_output())[0]:
+            outputs.append(output[1])
+        return outputs
 
     def read(self, parameter, mode):
         if mode == 2:
