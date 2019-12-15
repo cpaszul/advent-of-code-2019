@@ -12,6 +12,7 @@ class IntCode:
         self.offset = 0
 
     def set_input(self, x):
+        self.first_input = x
         self.rest_input = x
 
     def get_output(self):
