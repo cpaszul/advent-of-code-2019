@@ -5,32 +5,32 @@ DEFAULT_INPUT = 'day7.txt'
 
 def part_1(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
+        memory = list(map(int, f.readline().rstrip().split(',')))
     perms = permutations(range(5))
     max_val = -1
     for perm in perms:
         a, b, c, d, e = perm
-        a_res = IntCode(instructions, a, 0).run_through()[0]
-        b_res = IntCode(instructions, b, a_res).run_through()[0]
-        c_res = IntCode(instructions, c, b_res).run_through()[0]
-        d_res = IntCode(instructions, d, c_res).run_through()[0]
-        e_res = IntCode(instructions, e, d_res).run_through()[0]
+        a_res = IntCode(memory, a, 0).run_through()[0]
+        b_res = IntCode(memory, b, a_res).run_through()[0]
+        c_res = IntCode(memory, c, b_res).run_through()[0]
+        d_res = IntCode(memory, d, c_res).run_through()[0]
+        e_res = IntCode(memory, e, d_res).run_through()[0]
         largest = max(a_res, b_res, c_res, d_res, e_res)
         max_val = max(max_val, largest)
     return max_val
         
 def part_2(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
+        memory = list(map(int, f.readline().rstrip().split(',')))
     perms = permutations(range(5, 10))
     max_val = -1
     for perm in perms:
         a, b, c, d, e = perm
-        a_comp = IntCode(instructions, a)
-        b_comp = IntCode(instructions, b)
-        c_comp = IntCode(instructions, c)
-        d_comp = IntCode(instructions, d)
-        e_comp = IntCode(instructions, e)
+        a_comp = IntCode(memory, a)
+        b_comp = IntCode(memory, b)
+        c_comp = IntCode(memory, c)
+        d_comp = IntCode(memory, d)
+        e_comp = IntCode(memory, e)
         finished = False
         prev_e_res = 0
         while not finished:

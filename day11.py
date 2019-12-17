@@ -5,12 +5,12 @@ DEFAULT_INPUT = 'day11.txt'
 
 def part_1(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
+        memory = list(map(int, f.readline().rstrip().split(',')))
     grid = defaultdict(int)
     coord = (0, 0)
     direction = (0, -1)
     painted = set()
-    ic = IntCode(instructions, 0)
+    ic = IntCode(memory, 0)
     while True:
         new_color = ic.get_output()
         if new_color[0]:
@@ -34,12 +34,12 @@ def new_direction(current, turn):
         
 def part_2(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
+        memory = list(map(int, f.readline().rstrip().split(',')))
     grid = defaultdict(int)
     coord = (0, 0)
     grid[(0, 0)] = 1
     direction = (0, -1)
-    ic = IntCode(instructions, 1)
+    ic = IntCode(memory, 1)
     while True:
         new_color = ic.get_output()
         if new_color[0]:

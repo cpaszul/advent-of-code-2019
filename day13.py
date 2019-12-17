@@ -4,17 +4,17 @@ DEFAULT_INPUT = 'day13.txt'
 
 def part_1(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
-    ic = IntCode(instructions)
+        memory = list(map(int, f.readline().rstrip().split(',')))
+    ic = IntCode(memory)
     outputs = ic.run_through()
-    draw_instructions = list(zip(*[iter(outputs)]*3))
-    return sum(1 for t in draw_instructions if t[2] == 2)
+    draw_memory = list(zip(*[iter(outputs)]*3))
+    return sum(1 for t in draw_memory if t[2] == 2)
     
 def part_2(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
-    instructions[0] = 2
-    ic = IntCode(instructions)
+        memory = list(map(int, f.readline().rstrip().split(',')))
+    memory[0] = 2
+    ic = IntCode(memory)
     score = -1
     paddle_x = 0
     while True:

@@ -5,11 +5,11 @@ DEFAULT_INPUT = 'day15.txt'
 
 def day_15(loc=DEFAULT_INPUT):
     with open(loc) as f:
-        instructions = list(map(int, f.readline().rstrip().split(',')))
+        memory = list(map(int, f.readline().rstrip().split(',')))
     grid = {(0, 0): '.', (1, 0): '?', (-1, 0): '?', (0, 1): '?', (0, -1): '?'}
     droid = (0, 0)
     move_to_dir = {1: (0, -1), 2: (0, 1), 3: (-1, 0), 4: (1, 0)}
-    ic = IntCode(instructions)
+    ic = IntCode(memory)
     while '?' in grid.values():
         path = find_nearest_unknown(grid, droid)
         for m in path[:-1]:

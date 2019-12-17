@@ -22,7 +22,7 @@ def run_program(base_ints, noun, verb):
     ints[2] = verb
     ic = IntCode(ints)
     ic.run_through()
-    return ic.instructions[0]
+    return ic.memory[0]
     
 if __name__ == '__main__':
     print('Solution for Part One:', part_1())
