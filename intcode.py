@@ -33,7 +33,7 @@ class IntCode:
             raise AttributeError('IntCode has no input values')
         return self.inputs.pop(0)
 
-    def set_input(self, *inputs):
+    def add_inputs(self, *inputs):
         self.inputs += list(inputs)
 
     def get_output(self):

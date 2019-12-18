@@ -103,11 +103,9 @@ def part_2(loc=DEFAULT_INPUT):
     func_a_as_ascii = [ord(n) for n in func_a]
     func_b_as_ascii = [ord(n) for n in func_b]
     func_c_as_ascii = [ord(n) for n in func_c]
-    ic.set_input(*moves_as_ascii)
-    ic.set_input(*func_a_as_ascii)
-    ic.set_input(*func_b_as_ascii)
-    ic.set_input(*func_c_as_ascii)
-    ic.set_input(ord('n'), 10)
+    ic.add_inputs(*moves_as_ascii, *func_a_as_ascii,
+                  *func_b_as_ascii, *func_c_as_ascii,
+                  ord('n'), 10)
     return ic.run_through()[-1]
         
 if __name__ == '__main__':

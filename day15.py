@@ -13,11 +13,11 @@ def day_15(loc=DEFAULT_INPUT):
     while '?' in grid.values():
         path = find_nearest_unknown(grid, droid)
         for m in path[:-1]:
-            ic.set_input(m)
+            ic.add_inputs(m)
             ic.get_output()
             droid = (droid[0] + move_to_dir[m][0], droid[1] + move_to_dir[m][1])
         m = path[-1]
-        ic.set_input(m)
+        ic.add_inputs(m)
         status = ic.get_output()[1]
         if status == 0:
             wall = (droid[0] + move_to_dir[m][0], droid[1] + move_to_dir[m][1])

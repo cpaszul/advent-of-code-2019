@@ -30,11 +30,11 @@ def part_2(loc=DEFAULT_INPUT):
         elif tile[1] == 4:
             ball_x = x[1]
             if ball_x > paddle_x:
-                ic.set_input(1)
+                ic.add_inputs(1)
             elif ball_x < paddle_x:
-                ic.set_input(-1)
+                ic.add_inputs(-1)
             else:
-                ic.set_input(0)
+                ic.add_inputs(0)
 
 if __name__ == '__main__':
     print('Solution for Part One:', part_1())

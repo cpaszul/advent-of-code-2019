@@ -22,7 +22,7 @@ def part_1(loc=DEFAULT_INPUT):
             break
         direction = new_direction(direction, turn[1])
         coord = coord[0] + direction[0], coord[1] + direction[1]
-        ic.set_input(grid[coord])
+        ic.add_inputs(grid[coord])
     return len(painted)
 
 def new_direction(current, turn):
@@ -50,7 +50,7 @@ def part_2(loc=DEFAULT_INPUT):
             break
         direction = new_direction(direction, turn[1])
         coord = coord[0] + direction[0], coord[1] + direction[1]
-        ic.set_input(1 if grid[coord] else 0)
+        ic.add_inputs(1 if grid[coord] else 0)
     min_x = min(grid.keys(), key=lambda p:p[0])[0]
     min_y = min(grid.keys(), key=lambda p:p[1])[1]
     max_x = max(grid.keys(), key=lambda p:p[0])[0]

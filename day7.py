@@ -34,15 +34,15 @@ def part_2(loc=DEFAULT_INPUT):
         finished = False
         prev_e_res = 0
         while not finished:
-            a_comp.set_input(prev_e_res)
+            a_comp.add_inputs(prev_e_res)
             a_res = a_comp.get_output()
-            b_comp.set_input(a_res[1])
+            b_comp.add_inputs(a_res[1])
             b_res = b_comp.get_output()
-            c_comp.set_input(b_res[1])
+            c_comp.add_inputs(b_res[1])
             c_res = c_comp.get_output()
-            d_comp.set_input(c_res[1])
+            d_comp.add_inputs(c_res[1])
             d_res = d_comp.get_output()
-            e_comp.set_input(d_res[1])
+            e_comp.add_inputs(d_res[1])
             e_res = e_comp.get_output()
             if e_res[0]:
                 finished = True
