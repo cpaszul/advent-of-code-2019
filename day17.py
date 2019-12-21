@@ -93,19 +93,17 @@ def part_2(loc=DEFAULT_INPUT):
     with open(loc) as f:
         memory = list(map(int, f.readline().rstrip().split(',')))
     #moves solved by hand for given input
-    moves = 'A,B,A,A,B,C,B,C,C,B\n'
-    func_a = 'L,12,R,8,L,6,R,8,L,6\n'
-    func_b = 'R,8,L,12,L,12,R,8\n'
-    func_c = 'L,6,R,6,L,12\n'
+    moves = 'A,B,A,A,B,C,B,C,C,B'
+    func_a = 'L,12,R,8,L,6,R,8,L,6'
+    func_b = 'R,8,L,12,L,12,R,8'
+    func_c = 'L,6,R,6,L,12'
     memory[0] = 2
     ic = IntCode(memory)
-    moves_as_ascii = [ord(n) for n in moves]
-    func_a_as_ascii = [ord(n) for n in func_a]
-    func_b_as_ascii = [ord(n) for n in func_b]
-    func_c_as_ascii = [ord(n) for n in func_c]
-    ic.add_inputs(*moves_as_ascii, *func_a_as_ascii,
-                  *func_b_as_ascii, *func_c_as_ascii,
-                  ord('n'), 10)
+    ic.add_ascii_inputs(moves)
+    ic.add_ascii_inputs(func_a)
+    ic.add_ascii_inputs(func_b)
+    ic.add_ascii_inputs(func_c)
+    ic.add_ascii_inputs('n')
     return ic.run_through()[-1]
         
 if __name__ == '__main__':

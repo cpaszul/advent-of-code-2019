@@ -36,6 +36,11 @@ class IntCode:
     def add_inputs(self, *inputs):
         self.inputs += list(inputs)
 
+    def add_ascii_inputs(self, string):
+        if string[-1] != '\n':
+            string += '\n'
+        self.add_inputs(*(ord(ch) for ch in string))
+
     def get_output(self):
         while True:
             inst = self.memory[self.pointer]
