@@ -99,6 +99,14 @@ class IntCode:
             outputs.append(output[1])
         return outputs
 
+    def run_until_command(self):
+        outputs = ''
+        while True:
+            o = self.get_output()[1]
+            outputs += chr(o)
+            if outputs[-8:] == 'Command?' or o == 0:
+                return outputs
+
     def read(self, parameter, mode):
         if mode == 2:
             addr = self.memory[self.pointer + parameter] + self.offset

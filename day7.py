@@ -15,8 +15,7 @@ def part_1(loc=DEFAULT_INPUT):
         c_res = IntCode(memory, c, b_res).run_through()[0]
         d_res = IntCode(memory, d, c_res).run_through()[0]
         e_res = IntCode(memory, e, d_res).run_through()[0]
-        largest = max(a_res, b_res, c_res, d_res, e_res)
-        max_val = max(max_val, largest)
+        max_val = max(max_val, e_res)
     return max_val
         
 def part_2(loc=DEFAULT_INPUT):
